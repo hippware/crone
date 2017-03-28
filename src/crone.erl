@@ -115,12 +115,12 @@ start(Tasks) ->
                 [spawn(?MODULE, loop_task, [X]) | A]
               end, [], Tasks).
 
-%% @spec start_one(task()) -> pid()
+%% @spec start_one(task()) -> {ok, pid()}
 %% @doc Starts <code>crone</code>, spawning a process for each task.
 %% This single-task instance is suitable for inserting into supervision trees
 
 start_one(Task) ->
-    spawn_link(?MODULE, loop_task, [Task]).
+    {ok, spawn_link(?MODULE, loop_task, [Task])}.
 
 %% @spec stop([task()]) -> ok
 %% @doc Stops all monitoring processes started by <code>crone</code>.
