@@ -103,7 +103,7 @@
 -author('catseye@catseye.mb.ca').
 -copyright('Copyright (c)2002 Cat`s Eye Technologies. All rights reserved.').
 
--export([start/1, stop/1]).
+-export([start/1, start_one/1, stop/1]).
 -export([loop_task/1]).
 -export([format_time/1]).
 
@@ -114,6 +114,13 @@ start(Tasks) ->
   lists:foldl(fun(X, A) ->
                 [spawn(?MODULE, loop_task, [X]) | A]
               end, [], Tasks).
+
+%% @spec start_one(task()) -> pid()
+%% @doc Starts <code>crone</code>, spawning a process for each task.
+%% This single-task instance is suitable for inserting into supervision trees
+
+start_one(Task) ->
+    spawn_link(?MODULE, loop_task, [Task]).
 
 %% @spec stop([task()]) -> ok
 %% @doc Stops all monitoring processes started by <code>crone</code>.
